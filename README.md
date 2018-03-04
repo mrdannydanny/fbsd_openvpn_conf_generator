@@ -4,7 +4,7 @@ A python script that generates an openvpn config file for one or multiple client
 
 ## Requirements:
 * You need to be able to log in as root on your server via ssh (It's important
-  to make it impossible to log in as root once you finished using this script).
+  to make it impossible to log in as root once you finish using this script).
 * Python version 3 or higher must be installed locally on your system.
 
 ## Usage:
