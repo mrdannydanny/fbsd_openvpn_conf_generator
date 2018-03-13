@@ -12,7 +12,7 @@ A python script that generates an openvpn config file for one or multiple client
 git clone git@github.com:danzarov/fbsd_openvpn_conf_generator.git && cd fbsd_openvpn_conf_generator
 
 python3 conf_generator.py (It will ask for the client name and your vpn server ip address).
-
-Important: You can specify multiple clients separated by spaces (e.g., John Stuart James)
-if you want to generate multiple config files at once.
 ```
+
+*Important: You can specify multiple clients separated by spaces (e.g., John Stuart James)
+if you want to generate multiple config files at once.
