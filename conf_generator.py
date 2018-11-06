@@ -3,19 +3,19 @@ import subprocess
 
 def run(cmd):
     try:
-        ssh = 'ssh root@' + server_ip_addr
+        ssh = 'ssh -p ' + sshd_port + ' root@' + server_ip_addr
         return subprocess.check_output(ssh + cmd, stderr=subprocess.STDOUT, shell=True)
     except Exception:
         raise
 
 
-def build_client(client_name, server_ip_addr):
+def build_client(client_name):
     cmd = " 'cd /usr/local/etc/openvpn/easy-rsa/ &&" \
           " ./easyrsa.real build-client-full " + client_name + " nopass'"
     run(cmd)
 
 
-def update_template(client_name):
+def update_template(client_name, openvpn_port):
     with open('client_template.conf', "r") as fin:
         buffer = fin.readlines()
     with open(client_name + '.conf', "w") as fout:
@@ -29,7 +29,7 @@ def update_template(client_name):
                 line = line + grab_file_content('/usr/local/etc/openvpn/easy-rsa/pki/private/' +
                                                 client_name + '.key')
             elif 'proto udp' in line:
-                line = line + 'remote ' + server_ip_addr + ' 1194\n'
+                line = line + 'remote ' + server_ip_addr + ' ' + openvpn_port + '\n'
             fout.writelines(line)
 
 
@@ -42,13 +42,15 @@ def grab_file_content(file_path, key=False):
 
 
 def main():
-    global server_ip_addr
+    global server_ip_addr, sshd_port
     client_list = input('[*] Client Name: ')
     server_ip_addr = input('[*] Server IP Address: ')
+    sshd_port = input('[*] Port sshd is running: ')
+    openvpn_port = input('[*] Port openvpn is running: ')
 
     for client_name in client_list.split():
-        build_client(client_name, server_ip_addr)
-        update_template(client_name)
+        build_client(client_name)
+        update_template(client_name, openvpn_port)
 
 
 if __name__ == '__main__':
